@@ -11,6 +11,8 @@ class BallView: UIView {
     var tapAction: (() -> Void)?
     private var animator: UIViewPropertyAnimator?
     
+    var imageBall = UIImageView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureGesture()
@@ -32,6 +34,14 @@ class BallView: UIView {
     private func configureAppearance() {
         backgroundColor = .red
         layer.cornerRadius = frame.width / 2
+        
+        /*
+        imageBall = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        imageBall.backgroundColor = .clear
+        imageBall.layer.cornerRadius = frame.width / 2
+        imageBall.image = UIImage(named: "BallImage_0")
+        self.addSubview(imageBall)
+         */
     }
     
     @objc private func ballTapped() {
@@ -57,10 +67,12 @@ class BallDropVC: UIViewController {
     
     private var ballCount = 0
     private var ballsArr = [BallView]()
+    private var dropDurationInput = 4.0 //ระยะเวลาที่ลูกบอลตก
+    private var delayBetweenBallsInput = 0.0 //ความถี่ระหว่างลูกบอลที่จะตก
     
-    var ballTotal = 0 //จำนวนบอลทั้งหมด
-    var delayBetweenBallsInput = 0.0 //ความถี่ระหว่างลูกบอลที่จะตก
-    var dropDurationInput = 0.0 //ระยะเวลาที่ลูกบอลตก
+    var ballTotal = 0  //จำนวนบอลทั้งหมด
+    var totalAnimationDuration:Double = 0.0 //เวลาทั้งหมด
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +83,7 @@ class BallDropVC: UIViewController {
     }
 
     private func createBalls(total:Int) {
-        let ballSize: CGFloat = 50
+        let ballSize: CGFloat = 100
         
         for _ in 0..<total {
             let ball = BallView(frame: CGRect(x: 0, y: -ballSize, width: ballSize, height: ballSize))
@@ -83,8 +95,8 @@ class BallDropVC: UIViewController {
                 self?.handleBallTap(theBall)
             }
         }
-//        self.delayBetweenBallsInput = 0.4
-//        self.dropDurationInput = 4
+        
+        self.delayBetweenBallsInput = (totalAnimationDuration - 5) /  Double(ballTotal)
         
         startDroppingBalls(delayBetweenBalls: delayBetweenBallsInput, dropDuration: dropDurationInput)
     }
@@ -97,8 +109,6 @@ class BallDropVC: UIViewController {
             let delay = TimeInterval(index) * TimeInterval(delayBetweenBalls)
             ball.startFalling(duration: TimeInterval(dropDuration), maxWidth: maxWidth, delay: delay)
         }
-        
-        let totalAnimationDuration = TimeInterval(ballsArr.count) * delayBetweenBalls + dropDuration
         
         DispatchQueue.main.asyncAfter(deadline: .now() + totalAnimationDuration) { [weak self] in
             self?.removeDroppedBalls()
@@ -117,5 +127,29 @@ class BallDropVC: UIViewController {
         ball.removeFromSuperview()
         ballsArr.removeAll { $0 == ball }
         print("Ball Count: \(ballCount)")
+        
+        /*
+         //แสดง animation หลังกดแตะ
+         let imagesArr:[UIImage] = [.init(named: "ball_tab1")!,.init(named: "ball_tab2")!,.init(named: "ball_tab3")!]
+         
+         ballCount += 1
+         ball.stopFalling()
+         // Animate the image changes
+         BallView.transition(with: ball.imageBall, duration:  0.3) {
+         ball.stopFalling()
+         ball.imageBall.image = imagesArr[0]
+         } completion: { _ in
+         BallView.transition(with: ball.imageBall, duration:  0.3) {
+                 ball.imageBall.image = imagesArr[1]
+             } completion: { _ in
+         BallView.transition(with: ball.imageBall, duration: 0.3) {
+                     ball.imageBall.image = imagesArr[2]
+                    ball.removeFromSuperview()
+                     self.ballsArr.removeAll { $0 == ball }
+                     print("ball Count: \(self.ballCount)")
+                 }
+             }
+         }
+         */
     }
 }

@@ -15,8 +15,22 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="293-l4-wb9">
+                                <rect key="frame" x="159" y="443" width="75" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="actionOpenBallDrop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lGb-Vv-Zqy"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="293-l4-wb9" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="JtN-J2-FlG"/>
+                            <constraint firstItem="293-l4-wb9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="dCg-93-IZm"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QFf-y9-JBC"/>
                 </viewController>

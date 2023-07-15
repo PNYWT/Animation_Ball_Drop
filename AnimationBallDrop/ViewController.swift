@@ -14,12 +14,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .blue
         
-        
+    }
+    @IBAction func actionOpenBallDrop(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
             let vc = BallDropVC()
-            vc.ballTotal = 15
-            vc.delayBetweenBallsInput = 0.4
-            vc.dropDurationInput = 4
+            vc.ballTotal = 30
+            vc.totalAnimationDuration = 15
             vc.modalPresentationStyle = .overFullScreen
             self.present(vc, animated: false)
         }
